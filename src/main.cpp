@@ -13,6 +13,8 @@ int main(int argc, char* argv[]) {
     SDL_Renderer* Renderer = SDL_CreateRenderer(Window, NULL);
     SDL_FRect Rectangle = {0.0f, 0.0f, 100.0f, 100.0f};
 
+    SDL_SetRenderVSync(Renderer, 0);
+
     if (!Window) {
         std::cerr << "SDL_CreateWindow failed: " << SDL_GetError() << std::endl;
         SDL_Quit();
@@ -21,35 +23,41 @@ int main(int argc, char* argv[]) {
 
     // Main loop
     bool running = true;
+    const bool* Key_States = SDL_GetKeyboardState(nullptr);
     SDL_Event event;
+
+    uint32_t LastTime = 0;
+    uint32_t DeltaTime = 0;
+
     while (running) {
         // Handle events
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
+            if (event.type == SDL_EVENT_QUIT || event.key.key == SDLK_ESCAPE) {
                 running = false;
             }
-            else if(event.type == SDL_EVENT_KEY_DOWN){
-                switch(event.key.key){
-                    case SDLK_D:
-                        Rectangle.x += 10.0f;
-                        break;
 
-                    case SDLK_A:
-                        Rectangle.x -= 10.0f;
-                        break;
-
-                    case SDLK_W:
-                        Rectangle.y -= 10.0f;
-                        break;
-
-                    case SDLK_S:
-                        Rectangle.y += 10.0f;
-                        break;
-                    
-                }
-            }
         }
-        
+
+            uint32_t TickTime = SDL_GetTicks();
+            DeltaTime = TickTime - LastTime;
+            LastTime = TickTime;
+            float Speed = 120.0f * (float)(DeltaTime / 1000.0f);
+
+            if(Key_States[SDL_SCANCODE_W]){
+                Rectangle.y -= Speed;
+            }
+
+            if(Key_States[SDL_SCANCODE_S]){
+                Rectangle.y += Speed;
+            }
+
+            if(Key_States[SDL_SCANCODE_D]){
+                Rectangle.x += Speed;
+            }
+
+            if(Key_States[SDL_SCANCODE_A]){
+                Rectangle.x -= Speed;
+            }
         
              SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
              SDL_RenderClear(Renderer);
