@@ -1,2 +1,2 @@
 all:
-	g++ -Iinclude -Llib -o simple src/main.cpp src/glad.c -lmingw32 -lSDL3
+	g++ -Iinclude -Llib -o simple src/main.cpp src/glad.c utils/VBO/VBO.cpp utils/VAO/VAO.cpp utils/shader_program/shader_program.cpp utils/Camera/Camera.cpp -lmingw32 -lSDL3 -lopengl32
