@@ -112,8 +112,8 @@ int main(int argc, char *argv[]) {
     glm::mat4 projection = glm::mat4(1.0f);
 
     float aspect = 1.0f;
-    if (width > 0 && height > 0) {
-      aspect = static_cast<float>(width) / static_cast<float>(height);
+    if (WIDTH > 0 && HIEGHT > 0) {
+      aspect = static_cast<float>(WIDTH) / static_cast<float>(HIEGHT);
     }
 
     projection = glm::perspective(glm::radians(45.0f),
