@@ -111,8 +111,13 @@ int main(int argc, char *argv[]) {
     glm::mat4 view = MainCam.Get_View();
     glm::mat4 projection = glm::mat4(1.0f);
 
+    float aspect = 1.0f;
+    if (width > 0 && height > 0) {
+      aspect = static_cast<float>(width) / static_cast<float>(height);
+    }
+
     projection = glm::perspective(glm::radians(45.0f),
-                                  (float)WIDTH / (float)HIEGHT, 0.1f, 100.0f);
+                                  aspect, 0.1f, 100.0f);
 
     ShaderSource.SetMat4("model", model);
     ShaderSource.SetMat4("view", view);
